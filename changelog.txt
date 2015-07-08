@@ -1,3 +1,7 @@
+1.0.1 (2015-07-08)
+==================
+race condition fix for cache image thumbs
+
 1.0 (2015-07-07)
 ================
 initial release

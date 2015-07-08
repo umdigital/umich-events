@@ -3,7 +3,7 @@
  * Plugin Name: U-M Events
  * Plugin URI: http://creative.umich.edu
  * Description: Pull events from events.umich.edu
- * Version: 1.0
+ * Version: 1.0.1
  * Author: U-M: Michigan Creative
  * Author URI: http://creative.umich.edu
  */
@@ -257,6 +257,11 @@ class UmichEvents
 
 
         // CACHE DNE OR IS STALE SO LETS REDO IT
+
+        // prevent race condition on updating image
+        if( file_exists( $cacheFile ) ) {
+            @touch( $cacheFile );
+        }
 
         // prepare editor/load remote image
         $img = wp_get_image_editor( $imageUrl );
