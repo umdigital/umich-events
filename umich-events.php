@@ -3,7 +3,7 @@
  * Plugin Name: U-M Events
  * Plugin URI: http://creative.umich.edu
  * Description: Pull events from events.umich.edu
- * Version: 1.1
+ * Version: 1.1.1
  * Author: U-M: Michigan Creative
  * Author URI: http://creative.umich.edu
  */
@@ -37,7 +37,9 @@ class UmichEvents
         if( !class_exists( 'WP_GitHub_Updater' ) ) {
             include_once WPENHANCEMENTS_PATH .'includes'. DIRECTORY_SEPARATOR .'updater.php';
         }
-        //define( 'WP_GITHUB_FORCE_UPDATE', true );
+        if( $_GET['force-check'] ) {
+            define( 'WP_GITHUB_FORCE_UPDATE', true );
+        }
         if( is_admin() ) {
             new WP_GitHub_Updater(array(
                 // this is the slug of your plugin
