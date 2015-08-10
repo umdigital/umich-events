@@ -3,7 +3,7 @@
  * Plugin Name: U-M Events
  * Plugin URI: http://creative.umich.edu
  * Description: Pull events from events.umich.edu
- * Version: 1.0.1
+ * Version: 1.1
  * Author: U-M: Michigan Creative
  * Author URI: http://creative.umich.edu
  */
@@ -27,6 +27,8 @@ class UmichEvents
         add_action( 'init', array( __CLASS__, 'updater' ) );
 
         add_action( 'widgets_init', array( __CLASS__, 'initWidget' ) );
+
+        add_shortcode( 'umichevents', array( __CLASS__, 'displayEvents' ) );
     }
 
     static public function updater()
@@ -201,6 +203,59 @@ class UmichEvents
         return self::$_eventsData = @json_decode(file_get_contents( $cachePath ));
     }
 
+    static public function displayEvents( $atts )
+    {
+        $atts = shortcode_atts(array(
+            'featured'     => false,
+            'ongoing'      => false,
+            'tags'         => array(),
+            'groups'       => array(),
+            'locations'    => array(),
+            'morelink'     => false,
+            'morelinktext' => 'See all events',
+            'limit'        => 0
+        ), $atts );
+
+        $atts['featured'] = (bool) $atts['featured'];
+        $atts['ongoing']  = (bool) $atts['ongoing'];
+        $atts['morelink'] = (bool) $atts['morelink'];
+
+        $res = UmichEvents::get(array(
+            'featured'  => $atts['featured'],
+            'ongoing'   => $atts['ongoing'],
+            'tags'      => explode( ',', $atts['tags'] ),
+            'groups'    => explode( ',', $atts['groups'] ),
+            'locations' => explode( ',', $atts['locations'] )
+        ));
+
+        // limit the number of events we display
+        $i = 0;
+        $events = array();
+        foreach( $res as $row ) {
+            $events[] = $row;
+
+            if( $atts['limit'] && (count( $events ) >= $atts['limit']) ) {
+                break;
+            }
+        }
+
+        // locate theme template version
+        $tmp = array( dirname( __FILE__ ), 'templates', 'event.tpl' );
+        $eventTemplate = implode( DIRECTORY_SEPARATOR, $tmp );
+        if( $template = locate_template( array( 'umich-events/event-shortcode.tpl' ), false ) ) {
+            $eventTemplate = $template;
+        }
+
+        // locate theme template version
+        if( $template = locate_template( array( 'umich-events/shortcode.tpl' ), false ) ) {
+            include $template;
+        }
+        else {
+            $tmp = array( dirname( __FILE__ ), 'templates', 'shortcode.tpl' );
+            include( implode( DIRECTORY_SEPARATOR, $tmp ) );
+        }
+    }
+
     /* GET EVENTS URL FOR MORE EVENTS */
     static public function getMoreURL()
     {
@@ -333,7 +388,11 @@ class UmichEventsWidget extends WP_Widget
         // locate theme template version
         $tmp = array( dirname( __FILE__ ), 'templates', 'event.tpl' );
         $eventTemplate = implode( DIRECTORY_SEPARATOR, $tmp );
-        if( $template = locate_template( array( 'umich-events/event.tpl' ), false ) ) {
+        if( $template = locate_template( array( 'umich-events/event-widget.tpl' ), false ) ) {
+            $eventTemplate = $template;
+        }
+        // support for < 1.1 installs
+        else if( $template = locate_template( array( 'umich-events/event.tpl' ), false ) ) {
             $eventTemplate = $template;
         }
 

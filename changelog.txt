@@ -1,3 +1,10 @@
+1.1 (2015-08-10)
+================
+added documentation to README.md
+change widget event tpl override name (old still works for compatibility)
+add shortcode events display functionality
+cleanup default event tpl
+
 1.0.1 (2015-07-08)
 ==================
 race condition fix for cache image thumbs
