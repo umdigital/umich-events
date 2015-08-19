@@ -1,7 +1,7 @@
 <p>
     <label for="<?=$this->get_field_id('title');?>">
         Title:
-        <input type="text" class="widefat" id="<?=$this->get_field_id('title');?>" name="<?=$this->get_field_name('title');?>" value="<?=attribute_escape( $instance['title'] );?>" />
+        <input type="text" class="widefat" id="<?=$this->get_field_id('title');?>" name="<?=$this->get_field_name('title');?>" value="<?=esc_attr( $instance['title'] );?>" />
     </label>
 </p>
 
@@ -39,7 +39,7 @@
 <p>
     <label for="<?=$this->get_field_id('tags');?>">
         Tags:
-        <input type="text" class="widefat" id="<?=$this->get_field_id('tags');?>" name="<?=$this->get_field_name('tags');?>" value="<?=attribute_escape( implode( ', ', $instance['tags'] ) );?>" /><br />
+        <input type="text" class="widefat" id="<?=$this->get_field_id('tags');?>" name="<?=$this->get_field_name('tags');?>" value="<?=esc_attr( implode( ', ', $instance['tags'] ) );?>" /><br />
         <small>Comma separated events.umich.edu tags (Text)</small>
     </label>
 </p>
@@ -47,7 +47,7 @@
 <p>
     <label for="<?=$this->get_field_id('groups');?>">
         Groups:
-        <input type="text" class="widefat" id="<?=$this->get_field_id('groups');?>" name="<?=$this->get_field_name('groups');?>" value="<?=attribute_escape( implode( ', ', $instance['groups'] ) );?>" /><br />
+        <input type="text" class="widefat" id="<?=$this->get_field_id('groups');?>" name="<?=$this->get_field_name('groups');?>" value="<?=esc_attr( implode( ', ', $instance['groups'] ) );?>" /><br />
         <small>Comma separated events.umich.edu groups (Number)</small>
     </label>
 </p>
@@ -55,7 +55,7 @@
 <p>
     <label for="<?=$this->get_field_id('locations');?>">
         Locations:
-        <input type="text" class="widefat" id="<?=$this->get_field_id('locations');?>" name="<?=$this->get_field_name('locations');?>" value="<?=attribute_escape( implode( ', ', $instance['locations'] ) );?>" /><br />
+        <input type="text" class="widefat" id="<?=$this->get_field_id('locations');?>" name="<?=$this->get_field_name('locations');?>" value="<?=esc_attr( implode( ', ', $instance['locations'] ) );?>" /><br />
         <small>Comma separated events.umich.edu locations (Number)</small>
     </label>
 </p>
@@ -63,7 +63,7 @@
 <p>
     <label for="<?=$this->get_field_id('viewalltxt');?>">
         View All Link Text:
-        <input type="text" class="widefat" id="<?=$this->get_field_id('viewalltxt');?>" name="<?=$this->get_field_name('viewalltxt');?>" value="<?=attribute_escape( $instance['viewalltxt'] );?>" /><br />
+        <input type="text" class="widefat" id="<?=$this->get_field_id('viewalltxt');?>" name="<?=$this->get_field_name('viewalltxt');?>" value="<?=esc_attr( $instance['viewalltxt'] );?>" /><br />
         <small>Leave blank for no link</small>
     </label>
 </p>
@@ -71,7 +71,7 @@
 <p>
     <label for="<?=$this->get_field_id('limit');?>">
         Limit:
-        <input type="text" class="widefat" id="<?=$this->get_field_id('limit');?>" name="<?=$this->get_field_name('limit');?>" value="<?=attribute_escape( $instance['limit'] );?>" /><br />
+        <input type="text" class="widefat" id="<?=$this->get_field_id('limit');?>" name="<?=$this->get_field_name('limit');?>" value="<?=esc_attr( $instance['limit'] );?>" /><br />
         <small>Max number of events to show.</small>
     </label>
 </p>
