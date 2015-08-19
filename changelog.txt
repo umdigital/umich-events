@@ -1,3 +1,7 @@
+1.1.2 (2015-08-19)
+==================
+fix errors and deprecated code
+
 1.1.1 (2015-08-10)
 ==================
 added force-check compatibility
