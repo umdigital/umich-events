@@ -197,7 +197,7 @@ class UmichEvents
 
         // display some debug html comments
         if ( current_user_can( 'manage_options' ) ) {
-            echo '<!-- Events Source: '. $url ." -->\n";
+            echo '<!-- Events Source: '. self::$_eventsURL ." -->\n";
             echo '<!-- Disk Cachefile: uploads'. str_replace( $wpUpload['basedir'], '', $cachePath ) ." -->\n";
             echo '<!-- Disk Cachfile Date: '. date( 'Y-m-d H:i:s', @filemtime( $cachePath ) ) ."UTC -->\n";
         }
