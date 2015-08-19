@@ -37,7 +37,7 @@ class UmichEvents
         if( !class_exists( 'WP_GitHub_Updater' ) ) {
             include_once WPENHANCEMENTS_PATH .'includes'. DIRECTORY_SEPARATOR .'updater.php';
         }
-        if( $_GET['force-check'] ) {
+        if( isset( $_GET['force-check'] ) && $_GET['force-check'] ) {
             define( 'WP_GITHUB_FORCE_UPDATE', true );
         }
         if( is_admin() ) {
