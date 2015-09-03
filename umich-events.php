@@ -210,9 +210,9 @@ class UmichEvents
         $atts = shortcode_atts(array(
             'featured'     => false,
             'ongoing'      => false,
-            'tags'         => array(),
-            'groups'       => array(),
-            'locations'    => array(),
+            'tags'         => '',
+            'groups'       => '',
+            'locations'    => '',
             'morelink'     => false,
             'morelinktext' => 'See all events',
             'limit'        => 0
