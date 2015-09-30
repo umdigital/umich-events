@@ -16,7 +16,7 @@ Wordpress widget to get and display events from http://events.umich.edu.
 
 ### Shortcode
 ```
-[umichevents featured="0" ongoing="0" tags="" groups="" locations="" morelink="0" morelinktext="See all events" limit="0"]
+[umichevents featured="0" ongoing="0" tags="" groups="" locations="" morelink="0" morelinktext="See all events" limit="25"]
 ```
 * Override templates in your theme
   - THEME/umich-events/shortcode.tpl (list of events, loads single event template)
@@ -32,7 +32,7 @@ Wordpress widget to get and display events from http://events.umich.edu.
 | locations    | num list    | null           |
 | morelink     | 1, 0        | 0              |
 | morelinktext | string      | See all events |
-| limit        | number      | 0 (no limit)   |
+| limit        | number      | 25             |
 *lists are comma seperated*
 
 

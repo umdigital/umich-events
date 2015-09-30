@@ -3,7 +3,7 @@
  * Plugin Name: U-M Events
  * Plugin URI: http://creative.umich.edu
  * Description: Pull events from events.umich.edu
- * Version: 1.1.3
+ * Version: 1.1.4
  * Author: U-M: Michigan Creative
  * Author URI: http://creative.umich.edu
  */
@@ -16,7 +16,7 @@ class UmichEvents
     static private $_imgCacheTimeout = 7; // in days (should be at least 1 day)
 
     static private $_eventsURL  = null;
-    static private $_eventsData = null;
+    static private $_eventsData = array();
 
     static public function init()
     {
@@ -113,24 +113,29 @@ class UmichEvents
                 'ongoing'   => false,
                 'tags'      => array(),
                 'groups'    => array(),
-                'locations' => array()
+                'locations' => array(),
+                'limit'     => 25 
             ),
             $options
         );
 
+        if( is_null( $options['limit'] ) ) {
+            $options['limit'] = 25;
+        }
+
         $show = array();
         if( $options['featured'] ) {
-            $show[] = 'featured';
+            $show[] = 'feature';
         }
         if( !$options['ongoing'] ) {
             $show[] = 'new';
         }
 
         $filters = array(
-            'show'      => $show,
-            'tags'      => $options['tags'],
-            'sponsors'  => $options['groups'],
-            'locations' => $options['locations']
+            'show'        => $show,
+            'tags'        => $options['tags'],
+            'sponsors'    => $options['groups'],
+            'locations'   => $options['locations']
         );
 
         $filtersString = array();
@@ -152,15 +157,16 @@ class UmichEvents
         }
         $filtersString = implode( ',', $filtersString );
 
-        if( self::$_eventsData ) {
-            return self::$_eventsData;
+        // cache file
+        $fileKey = md5( $filtersString . date( 'Y-m-d' ) . $options['limit'] );
+
+        // already in memory return it
+        if( @self::$_eventsData[ $fileKey ] ) {
+            return self::$_eventsData[ $fileKey ];
         }
 
         // wp upload settings
         $wpUpload = wp_upload_dir();
-
-        // cache file
-        $fileKey = md5( $filtersString . date( 'Y-m-d' ) );
 
         $tmp = array(
             $wpUpload['basedir'],
@@ -176,6 +182,10 @@ class UmichEvents
             array( $filtersString, date( 'Y-m-d' ) ),
             self::$_eventsURL
         );
+
+        if( preg_match( '/^[0-9]+$/', $options['limit'] ) ) {
+            self::$_eventsURL .= '&max-results='. $options['limit'];
+        }
 
         // check cache, get results if stale/DNE
         if( !file_exists( $cachePath ) || ((@filemtime( $cachePath ) + self::$_cacheTimeout) < time()) ) {
@@ -202,7 +212,7 @@ class UmichEvents
             echo '<!-- Disk Cachfile Date: '. date( 'Y-m-d H:i:s', @filemtime( $cachePath ) ) ."UTC -->\n";
         }
 
-        return self::$_eventsData = @json_decode(file_get_contents( $cachePath ));
+        return self::$_eventsData[ $fileKey ] = @json_decode(file_get_contents( $cachePath ));
     }
 
     static public function displayEvents( $atts )
@@ -215,31 +225,21 @@ class UmichEvents
             'locations'    => '',
             'morelink'     => false,
             'morelinktext' => 'See all events',
-            'limit'        => 0
+            'limit'        => 25
         ), $atts );
 
         $atts['featured'] = (bool) $atts['featured'];
         $atts['ongoing']  = (bool) $atts['ongoing'];
         $atts['morelink'] = (bool) $atts['morelink'];
 
-        $res = UmichEvents::get(array(
+        $events = UmichEvents::get(array(
             'featured'  => $atts['featured'],
             'ongoing'   => $atts['ongoing'],
             'tags'      => explode( ',', $atts['tags'] ),
             'groups'    => explode( ',', $atts['groups'] ),
-            'locations' => explode( ',', $atts['locations'] )
+            'locations' => explode( ',', $atts['locations'] ),
+            'limit'     => $atts['limit']
         ));
-
-        // limit the number of events we display
-        $i = 0;
-        $events = array();
-        foreach( $res as $row ) {
-            $events[] = $row;
-
-            if( $atts['limit'] && (count( $events ) >= $atts['limit']) ) {
-                break;
-            }
-        }
 
         // locate theme template version
         $tmp = array( dirname( __FILE__ ), 'templates', 'event.tpl' );
@@ -368,24 +368,14 @@ class UmichEventsWidget extends WP_Widget
     {
         UmichEvents::cleanup();
 
-        $res = UmichEvents::get(array(
+        $events = UmichEvents::get(array(
             'featured'  => $instance['featured'],
             'ongoing'   => $instance['ongoing'],
             'tags'      => explode( ',', $instance['tags'] ),
             'groups'    => explode( ',', $instance['groups'] ),
-            'locations' => explode( ',', $instance['locations'] )
+            'locations' => explode( ',', $instance['locations'] ),
+            'limit'     => $instance['limit']
         ));
-
-        // limit the number of events we display
-        $i = 0;
-        $events = array();
-        foreach( $res as $row ) {
-            $events[] = $row;
-
-            if( count( $events ) >= $instance['limit'] ) {
-                break;
-            }
-        }
 
         // locate theme template version
         $tmp = array( dirname( __FILE__ ), 'templates', 'event.tpl' );
