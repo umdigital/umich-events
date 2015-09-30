@@ -1,4 +1,4 @@
-1.1.4 (2015-09-03)
+1.1.4 (2015-09-30)
 ==================
 pass limit value as undocumented API parameter
 fix multiple events requests on a single page bug
