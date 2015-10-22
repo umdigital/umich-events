@@ -1,3 +1,8 @@
+1.1.5 (2015-10-22)
+==================
+Provide option to showimage using shortcode with named size
+Update documentation
+
 1.1.4 (2015-09-30)
 ==================
 pass limit value as undocumented API parameter
