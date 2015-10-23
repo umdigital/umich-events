@@ -3,7 +3,7 @@
  * Plugin Name: U-M Events
  * Plugin URI: https://github.com/umichcreative/umich-events/
  * Description: Pull events from events.umich.edu
- * Version: 1.1.5
+ * Version: 1.1.6
  * Author: U-M: Michigan Creative
  * Author URI: http://creative.umich.edu
  */
@@ -217,7 +217,6 @@ class UmichEvents
 
     static public function displayEvents( $atts )
     {
-        var_dump( $atts );
         $instance = shortcode_atts(array(
             'showimage'    => false,
             'imagesize'   => 'full',
