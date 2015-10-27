@@ -3,7 +3,7 @@
  * Plugin Name: U-M Events
  * Plugin URI: https://github.com/umichcreative/umich-events/
  * Description: Pull events from events.umich.edu
- * Version: 1.1.6
+ * Version: 1.1.7
  * Author: U-M: Michigan Creative
  * Author URI: http://creative.umich.edu
  */

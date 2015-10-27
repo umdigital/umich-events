@@ -11,4 +11,4 @@
 <? endif; ?>
 <span class="location"><?=$event->building_name;?></span>
 @
-<span class="time"><?=date( 'H:ia', strtotime( date( 'Y-m-d '. $event->time_start ) ) );?></span>
+<span class="time"><?=date( 'g:ia', strtotime( date( 'Y-m-d '. $event->time_start ) ) );?></span>

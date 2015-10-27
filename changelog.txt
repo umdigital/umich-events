@@ -1,3 +1,7 @@
+1.1.7 (2015-10-27)
+==================
+update event hour display to 12hr
+
 1.1.6 (2015-10-23)
 ==================
 remove debug code, oops my bad
