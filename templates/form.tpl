@@ -33,30 +33,37 @@
     </label>
 </p>
 
-<p>&nbsp;</p>
-<p>For Tags, Groups &amp; Locations see <a href="http://events.umich.edu/list" target="_blank">http://events.umich.edu/list</a> for options.</p>
-
+<? $meta = UmichEvents::getMetadata(); ?>
 <p>
     <label for="<?=$this->get_field_id('tags');?>">
         Tags:
-        <input type="text" class="widefat" id="<?=$this->get_field_id('tags');?>" name="<?=$this->get_field_name('tags');?>" value="<?=esc_attr( implode( ', ', $instance['tags'] ) );?>" /><br />
-        <small>Comma separated events.umich.edu tags (Text)</small>
+        <select class="jqmslist widefat" id="<?=$this->get_field_id('tags');?>" name="<?=$this->get_field_name('tags');?>[]" multiple="multiple">
+            <? foreach( $meta->tags as $name => $id ): ?>
+            <option value="<?=$id;?>"<?=(in_array( $id, $instance['tags'] ) ? ' selected="selected"' : null);?>><?=$name;?></option>
+            <? endforeach; ?>
+        </select>
     </label>
 </p>
 
 <p>
     <label for="<?=$this->get_field_id('groups');?>">
         Groups:
-        <input type="text" class="widefat" id="<?=$this->get_field_id('groups');?>" name="<?=$this->get_field_name('groups');?>" value="<?=esc_attr( implode( ', ', $instance['groups'] ) );?>" /><br />
-        <small>Comma separated events.umich.edu groups (Number)</small>
+        <select class="jqmslist widefat" id="<?=$this->get_field_id('groups');?>" name="<?=$this->get_field_name('groups');?>[]" multiple="multiple">
+            <? foreach( $meta->sponsors as $name => $id ): ?>
+            <option value="<?=$id;?>"<?=(in_array( $id, $instance['groups'] ) ? ' selected="selected"' : null);?>><?=$name;?></option>
+            <? endforeach; ?>
+        </select>
     </label>
 </p>
 
 <p>
     <label for="<?=$this->get_field_id('locations');?>">
         Locations:
-        <input type="text" class="widefat" id="<?=$this->get_field_id('locations');?>" name="<?=$this->get_field_name('locations');?>" value="<?=esc_attr( implode( ', ', $instance['locations'] ) );?>" /><br />
-        <small>Comma separated events.umich.edu locations (Number)</small>
+        <select class="jqmslist widefat" id="<?=$this->get_field_id('locations');?>" name="<?=$this->get_field_name('locations');?>[]" multiple="multiple">
+            <? foreach( $meta->locations as $name => $id ): ?>
+            <option value="<?=$id;?>"<?=(in_array( $id, $instance['locations'] ) ? ' selected="selected"' : null);?>><?=$name;?></option>
+            <? endforeach; ?>
+        </select>
     </label>
 </p>
 

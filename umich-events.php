@@ -3,7 +3,7 @@
  * Plugin Name: U-M Events
  * Plugin URI: https://github.com/umichcreative/umich-events/
  * Description: Pull events from events.umich.edu
- * Version: 1.1.7
+ * Version: 1.2
  * Author: U-M: Michigan Creative
  * Author URI: http://creative.umich.edu
  */
@@ -15,14 +15,21 @@ class UmichEvents
     static private $_cacheTimeout    = 5; // in minutes (should be at least 1 minute)
     static private $_imgCacheTimeout = 7; // in days (should be at least 1 day)
 
+    static private $_baseMetaUrl = 'https://events.umich.edu/list/metadata/json';
+    static private $_metaTimeout = 7; // in days (should be at least 1 day)
+
     static private $_eventsURL  = null;
     static private $_eventsData = array();
+
+    static private $_metaURL  = null;
+    static private $_metaData = array();
 
     static public function init()
     {
         // convert cache timeouts into seconds
         self::$_cacheTimeout    = 60 * (self::$_cacheTimeout >= 1 ? self::$_cacheTimeout : 1);
         self::$_imgCacheTimeout = 60 * 60 * 24 * (self::$_imgCacheTimeout >= 1 ? self::$_imgCacheTimeout : 1);
+        self::$_metaTimeout     = 60 * 60 * 24 * (self::$_metaTimeout >= 1 ? self::$_metaTimeout : 1);
 
         add_action( 'init', array( __CLASS__, 'updater' ) );
 
@@ -102,6 +109,67 @@ class UmichEvents
     static public function initWidget()
     {
         register_widget( 'UmichEventsWidget' );
+    }
+
+    static public function getMetadata()
+    {
+        if( self::$_metaData ) {
+            return self::$_metaData;
+        }
+
+        $fileKey = 'metadata';
+        self::$_metaURL = self::$_baseMetaUrl;
+
+        // wp upload settings
+        $wpUpload = wp_upload_dir();
+
+        $tmp = array(
+            $wpUpload['basedir'],
+            'umich-events-cache',
+            $fileKey .'_'. date( 'Ymd' ) .'.cache'
+        );
+        $cachePath = implode( DIRECTORY_SEPARATOR, $tmp );
+
+        // check cache, get results if stale/DNE
+        if( !file_exists( $cachePath ) || ((@filemtime( $cachePath ) + self::$_metaTimeout) < time()) ) {
+            // update timestamp so other requests don't make a pull request at the same time
+            @touch( $cachePath );
+
+            // get live results
+            $feed = file_get_contents( self::$_metaURL );
+
+            if( $feed && (json_last_error() === JSON_ERROR_NONE) ) {
+                $feed = json_decode( $feed );
+
+                // cleanup and organize data
+                $meta = array( 'raw' => $feed );
+                foreach( $feed as $type => $data ) {
+                    $meta[ $type ] = array();
+
+                    foreach( $data as $record ) {
+                        $meta[ $type ][ $record->name ] = $record->id;
+                    }
+
+                    ksort( $meta[ $type ] );
+                }
+
+
+                // CACHE RESULTS
+                // make sure store dir is there
+                wp_mkdir_p( dirname( $cachePath ) );
+
+                @file_put_contents( $cachePath, json_encode( $meta ) );
+            }
+        }
+
+        // display some debug html comments
+        if ( current_user_can( 'manage_options' ) ) {
+            echo '<!-- Events Meta Source: '. self::$_metaURL ." -->\n";
+            echo '<!-- Disk Cachefile: uploads'. str_replace( $wpUpload['basedir'], '', $cachePath ) ." -->\n";
+            echo '<!-- Disk Cachfile Date: '. date( 'Y-m-d H:i:s', @filemtime( $cachePath ) ) ."UTC -->\n";
+        }
+
+        return self::$_metaData = @json_decode( file_get_contents( $cachePath ) );
     }
 
     /* GET DATA FROM EVENTS API */
@@ -353,7 +421,8 @@ UmichEvents::init();
 /** WIDGET CODE **/
 class UmichEventsWidget extends WP_Widget
 {
-    private $_cachePath = null;
+    private $_cachePath          = null;
+    private $_multiselectVersion = '1.0';
 
     function __construct()
     {
@@ -362,11 +431,16 @@ class UmichEventsWidget extends WP_Widget
             'description' => 'Display U-M Events from events.umich.edu'
         ));
 
-        //add_action( 'sidebar_admin_setup', array( $this, 'admin_setup' ) );
+        add_action( 'sidebar_admin_setup', array( $this, 'admin_setup' ) );
     }
 
     function admin_setup()
     {
+        wp_enqueue_style( 'jquery-multiselect', plugins_url('vendor/jquery.multiselect.css', __FILE__), null, $this->_multiselectVersion );
+        wp_enqueue_style( 'umevents-admin', plugins_url('umevents_admin.css', __FILE__), null, '1.0' );
+
+        wp_enqueue_script('jquery-actual-js', plugins_url('vendor/jquery.actual.js', __FILE__), array( 'jquery' ) );
+        wp_enqueue_script('jquery-multiselect-js', plugins_url('vendor/jquery.multiselect.js', __FILE__), array( 'jquery' ) );
         wp_enqueue_script('umevents-admin-js', plugins_url('umevents_admin.js', __FILE__), array( 'jquery' ) );
     }
 
@@ -411,7 +485,10 @@ class UmichEventsWidget extends WP_Widget
         }
 
         foreach( array( 'tags', 'groups', 'locations' ) as $key ) {
-            $new[ $key ] = explode( ',', $new[ $key ] );
+            if( !is_array( $new[ $key ] ) ) {
+                $new[ $key ] = explode( ',', $new[ $key ] );
+            }
+
             foreach( $new[ $key ] as &$val ) {
                 $val = trim( $val );
             }
@@ -419,7 +496,7 @@ class UmichEventsWidget extends WP_Widget
         }
 
         $new['limit'] = trim( $new['limit'] );
-        if( !$new['limit'] || !preg_match( '/^[0-9]$/', $new['limit'] ) ) {
+        if( !$new['limit'] || !preg_match( '/^[0-9]+$/', $new['limit'] ) ) {
             $new['limit'] = 4;
         }
 

@@ -46,6 +46,7 @@ Wordpress widget to get and display events from http://events.umich.edu.
 * Admin interface for cache timeouts
   - Feed Timeout (currently 5 min), minimum 1 minute
   - Image Timeout (currently 7 days), minimum 1 day
+  - Meta Timeout (currently 7 days), minimum 1 day
 * Multisite support
   - Network admin cache management
   - Network admin cache storage (single or per site)

@@ -1,3 +1,8 @@
+1.2 (2015-11-18)
+================
+Pull master list of Tags, Groups, Locations from API
+Updated widget for select lists of Tags, Groups, Locations
+
 1.1.7 (2015-10-27)
 ==================
 update event hour display to 12hr
