@@ -2,8 +2,10 @@
     $(document).ready(function(){
         function loadMultiselect(){
             $('.jqmslist').multiselect({
-                columns: 2,
-                placeholder: 'Select options'
+                columns    : 2,
+                placeholder: 'Select options',
+                search     : true,
+                selectAll  : true
             });
         }
 
