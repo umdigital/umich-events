@@ -15,7 +15,7 @@ class UmichEvents
     static private $_cacheTimeout    = 5; // in minutes (should be at least 1 minute)
     static private $_imgCacheTimeout = 7; // in days (should be at least 1 day)
 
-    static private $_baseMetaUrl = 'https://events.umich.edu/list/metadata/json';
+    static private $_baseMetaUrl = 'http://events.umich.edu/list/metadata/json';
     static private $_metaTimeout = 7; // in days (should be at least 1 day)
 
     static private $_eventsURL  = null;
