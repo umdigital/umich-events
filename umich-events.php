@@ -8,6 +8,8 @@
  * Author URI: http://creative.umich.edu
  */
 
+define( 'UMICHEVENTS_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR );
+
 /** PLUGIN & DATA MANAGEMENT CODE **/
 class UmichEvents
 {
@@ -42,7 +44,7 @@ class UmichEvents
     {
         // UPDATER SETUP
         if( !class_exists( 'WP_GitHub_Updater' ) ) {
-            include_once WPENHANCEMENTS_PATH .'includes'. DIRECTORY_SEPARATOR .'updater.php';
+            include_once UMICHEVENTS_PATH .'includes'. DIRECTORY_SEPARATOR .'updater.php';
         }
         if( isset( $_GET['force-check'] ) && $_GET['force-check'] ) {
             define( 'WP_GITHUB_FORCE_UPDATE', true );
