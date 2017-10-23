@@ -295,15 +295,19 @@ class UmichEvents
             'tags'         => '',
             'groups'       => '',
             'locations'    => '',
+            'wraptpl'      => 'shortcode',
+            'eventtpl'     => 'event-shortcode',
             'morelink'     => false,
             'morelinktext' => 'See all events',
             'limit'        => 25
         ), $atts );
 
-        $instance['featured'] = (bool) $instance['featured'];
-        $instance['ongoing']  = (bool) $instance['ongoing'];
-        $instance['morelink'] = (bool) $instance['morelink'];
+        $instance['featured']   = (bool) $instance['featured'];
+        $instance['ongoing']    = (bool) $instance['ongoing'];
+        $instance['morelink']   = (bool) $instance['morelink'];
         $instance['image-size'] = $instance['imagesize'];
+        $instance['wraptpl']    = $instance['wraptpl']  ? $instance['wraptpl']  : 'shortcode';
+        $instance['eventtpl']   = $instance['eventtpl'] ? $instance['eventtpl'] : 'event-shortcode';
 
         $events = UmichEvents::get(array(
             'featured'  => $instance['featured'],
@@ -317,13 +321,13 @@ class UmichEvents
         // locate theme template version
         $tmp = array( dirname( __FILE__ ), 'templates', 'event.tpl' );
         $eventTemplate = implode( DIRECTORY_SEPARATOR, $tmp );
-        if( $template = locate_template( array( 'umich-events/event-shortcode.tpl' ), false ) ) {
+        if( $template = locate_template( array( 'umich-events/'. $instance['eventtpl'] .'.tpl' ), false ) ) {
             $eventTemplate = $template;
         }
 
         ob_start();
         // locate theme template version
-        if( $template = locate_template( array( 'umich-events/shortcode.tpl' ), false ) ) {
+        if( $template = locate_template( array( 'umich-events/'. $instance['wraptpl'] .'.tpl' ), false ) ) {
             include $template;
         }
         else {

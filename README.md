@@ -23,18 +23,20 @@ Wordpress widget to get and display events from http://events.umich.edu.
   - THEME/umich-events/event-shortcode.tpl (single event)
 
 #### Shortcode options
-| Option       | Values      | Default        |
-| ------------ | ----------- | -------------- |
-| showimage    | 1, 0        | 0              |
-| imagesize    | string      | full           |
-| featured     | 1, 0        | 0              |
-| ongoing      | 1, 0        | 0              |
-| tags         | string list | null           |
-| groups       | num list    | null           |
-| locations    | num list    | null           |
-| morelink     | 1, 0        | 0              |
-| morelinktext | string      | See all events |
-| limit        | number      | 25             |
+| Option       | Values      | Default         |
+| ------------ | ----------- | --------------- |
+| showimage    | 1, 0        | 0               |
+| imagesize    | string      | full            |
+| featured     | 1, 0        | 0               |
+| ongoing      | 1, 0        | 0               |
+| tags         | string list | null            |
+| groups       | num list    | null            |
+| locations    | num list    | null            |
+| wraptpl      | string      | shortcode       |
+| eventtpl     | string      | event-shortcode |
+| morelink     | 1, 0        | 0               |
+| morelinktext | string      | See all events  |
+| limit        | number      | 25              |
 *lists are comma seperated*
 
 
