@@ -3,7 +3,7 @@
  * Plugin Name: U-M Events
  * Plugin URI: https://github.com/umichcreative/umich-events/
  * Description: Pull events from events.umich.edu
- * Version: 1.2.5
+ * Version: 1.2.6
  * Author: U-M: Michigan Creative
  * Author URI: http://creative.umich.edu
  */
@@ -182,6 +182,7 @@ class UmichEvents
                 'featured'  => false,
                 'ongoing'   => false,
                 'tags'      => array(),
+                'types'     => array(),
                 'groups'    => array(),
                 'locations' => array(),
                 'limit'     => 25 
@@ -204,6 +205,7 @@ class UmichEvents
         $filters = array(
             'show'        => $show,
             'tags'        => $options['tags'],
+            'types'       => $options['types'],
             'sponsors'    => $options['groups'],
             'locations'   => $options['locations']
         );
@@ -293,6 +295,7 @@ class UmichEvents
             'featured'     => false,
             'ongoing'      => false,
             'tags'         => '',
+            'types'        => '',
             'groups'       => '',
             'locations'    => '',
             'wraptpl'      => 'shortcode',
@@ -313,6 +316,7 @@ class UmichEvents
             'featured'  => $instance['featured'],
             'ongoing'   => $instance['ongoing'],
             'tags'      => explode( ',', $instance['tags'] ),
+            'types'     => explode( ',', $instance['types'] ),
             'groups'    => explode( ',', $instance['groups'] ),
             'locations' => explode( ',', $instance['locations'] ),
             'limit'     => $instance['limit']
@@ -458,6 +462,7 @@ class UmichEventsWidget extends WP_Widget
             'featured'  => $instance['featured'],
             'ongoing'   => $instance['ongoing'],
             'tags'      => explode( ',', $instance['tags'] ),
+            'types'     => explode( ',', $instance['types'] ),
             'groups'    => explode( ',', $instance['groups'] ),
             'locations' => explode( ',', $instance['locations'] ),
             'limit'     => $instance['limit']
@@ -490,7 +495,7 @@ class UmichEventsWidget extends WP_Widget
             $new[ $key ] = isset( $new[ $key ] ) ? true : false;
         }
 
-        foreach( array( 'tags', 'groups', 'locations' ) as $key ) {
+        foreach( array( 'tags', 'types', 'groups', 'locations' ) as $key ) {
             if( !is_array( $new[ $key ] ) ) {
                 $new[ $key ] = explode( ',', $new[ $key ] );
             }
@@ -520,6 +525,7 @@ class UmichEventsWidget extends WP_Widget
                 'showimage'  => false,
                 'image-size' => 'full',
                 'tags'       => '',
+                'types'      => '',
                 'groups'     => '',
                 'locations'  => '',
                 'viewalltxt' => '',
@@ -528,7 +534,7 @@ class UmichEventsWidget extends WP_Widget
         );
         $instance['imagesize'] = $instance['image-size'];
 
-        foreach( array( 'tags', 'groups', 'locations' ) as $key ) {
+        foreach( array( 'tags', 'types', 'groups', 'locations' ) as $key ) {
             $instance[ $key ] = explode( ',', $instance[ $key ] );
             foreach( $instance[ $key ] as &$val ) {
                 $val = trim( $val );

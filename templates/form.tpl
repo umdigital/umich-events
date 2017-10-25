@@ -46,6 +46,17 @@
 </p>
 
 <p>
+    <label for="<?=$this->get_field_id('types');?>">
+        Types:
+        <select class="jqmslist widefat" id="<?=$this->get_field_id('types');?>" name="<?=$this->get_field_name('types');?>[]" multiple="multiple">
+            <? foreach( $meta->types as $name => $id ): ?>
+            <option value="<?=$id;?>"<?=(in_array( $id, $instance['types'] ) ? ' selected="selected"' : null);?>><?=$name;?></option>
+            <? endforeach; ?>
+        </select>
+    </label>
+</p>
+
+<p>
     <label for="<?=$this->get_field_id('groups');?>">
         Groups:
         <select class="jqmslist widefat" id="<?=$this->get_field_id('groups');?>" name="<?=$this->get_field_name('groups');?>[]" multiple="multiple">

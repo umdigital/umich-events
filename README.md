@@ -2,7 +2,7 @@ UMich Events
 ============
 Wordpress widget to get and display events from http://events.umich.edu.
 
-> Using default options will be slow when requesting data from events.umich.edu.  It is highly recommended to use at least one filtering option (featured, ongoing, tags, groups, locations) to increase the events request speed.
+> Using default options will be slow when requesting data from events.umich.edu.  It is highly recommended to use at least one filtering option (featured, ongoing, tags, types, groups, locations) to increase the events request speed.
 
 ## Features
 ### Widget
@@ -16,7 +16,7 @@ Wordpress widget to get and display events from http://events.umich.edu.
 
 ### Shortcode
 ```
-[umichevents showimage="0" imagesize="full" featured="0" ongoing="0" tags="" groups="" locations="" morelink="0" morelinktext="See all events" limit="25"]
+[umichevents showimage="0" imagesize="full" featured="0" ongoing="0" tags="" types="" groups="" locations="" morelink="0" morelinktext="See all events" limit="25"]
 ```
 * Override templates in your theme
   - THEME/umich-events/shortcode.tpl (list of events, loads single event template)
@@ -30,6 +30,7 @@ Wordpress widget to get and display events from http://events.umich.edu.
 | featured     | 1, 0        | 0               |
 | ongoing      | 1, 0        | 0               |
 | tags         | string list | null            |
+| types        | string list | null            |
 | groups       | num list    | null            |
 | locations    | num list    | null            |
 | wraptpl      | string      | shortcode       |
