@@ -30,7 +30,7 @@ Wordpress widget to get and display events from http://events.umich.edu.
 | featured     | 1, 0        | 0               |
 | ongoing      | 1, 0        | 0               |
 | tags         | string list | null            |
-| types        | string list | null            |
+| types        | num list    | null            |
 | groups       | num list    | null            |
 | locations    | num list    | null            |
 | wraptpl      | string      | shortcode       |
