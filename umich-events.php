@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: U-M Events
+ * Plugin Name: U-M: Events
  * Plugin URI: https://github.com/umdigital/umich-events/
  * Description: Pull events from events.umich.edu
  * Version: 1.2.7
