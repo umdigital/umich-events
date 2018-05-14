@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name: U-M Events
- * Plugin URI: https://github.com/umichcreative/umich-events/
+ * Plugin URI: https://github.com/umdigital/umich-events/
  * Description: Pull events from events.umich.edu
- * Version: 1.2.6
- * Author: U-M: Michigan Creative
- * Author URI: http://creative.umich.edu
+ * Version: 1.2.7
+ * Author: U-M: Digital
+ * Author URI: http://vpcomm.umich.edu
  */
 
 define( 'UMICHEVENTS_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR );
@@ -56,13 +56,13 @@ class UmichEvents
                 // this is the name of the folder your plugin lives in
                 'proper_folder_name' => dirname( plugin_basename( __FILE__ ) ),
                 // the github API url of your github repo
-                'api_url' => 'https://api.github.com/repos/umichcreative/umich-events',
+                'api_url' => 'https://api.github.com/repos/umdigital/umich-events',
                 // the github raw url of your github repo
-                'raw_url' => 'https://raw.githubusercontent.com/umichcreative/umich-events/master',
+                'raw_url' => 'https://raw.githubusercontent.com/umdigital/umich-events/master',
                 // the github url of your github repo
-                'github_url' => 'https://github.com/umichcreative/umich-events',
+                'github_url' => 'https://github.com/umdigital/umich-events',
                  // the zip url of the github repo
-                'zip_url' => 'https://github.com/umichcreative/umich-events/zipball/master',
+                'zip_url' => 'https://github.com/umdigital/umich-events/zipball/master',
                 // wether WP should check the validity of the SSL cert when getting an update, see https://github.com/jkudish/WordPress-GitHub-Plugin-Updater/issues/2 and https://github.com/jkudish/WordPress-GitHub-Plugin-Updater/issues/4 for details
                 'sslverify' => true,
                 // which version of WordPress does your plugin require?
