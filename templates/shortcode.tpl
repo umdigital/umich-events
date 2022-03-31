@@ -1,9 +1,9 @@
 <ul class="events">
-    <? foreach( $events as $event ): ?>
-    <li><? include $eventTemplate; ?></li>
-    <? endforeach; ?>
+    <?php foreach( $events as $event ): ?>
+    <li><?php include $eventTemplate; ?></li>
+    <?php endforeach; ?>
 </ul>
 
-<? if( $atts['morelink'] ): ?>
+<?php if( $atts['morelink'] ): ?>
 <p class="more"><a href="<?=UmichEvents::getMoreURL();?>"><?=$atts['morelinktext'];?></a></p>
-<? endif; ?>
+<?php endif; ?>

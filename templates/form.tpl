@@ -26,21 +26,21 @@
     <label for="<?=$this->get_field_id('image-size');?>">
         Image Size:
         <select class="widefat" id="<?=$this->get_field_id('image-size');?>" name="<?=$this->get_field_name('image-size');?>">
-            <? foreach( array_merge( array( 'full' ), get_intermediate_image_sizes() ) as $size ): ?>
+            <?php foreach( array_merge( array( 'full' ), get_intermediate_image_sizes() ) as $size ): ?>
             <option value="<?=$size;?>" <?=( $instance['image-size'] == $size ? 'selected="selected"' : null);?>><?=$size;?></option>
-            <? endforeach; ?>
+            <?php endforeach; ?>
         </select>
     </label>
 </p>
 
-<? $meta = UmichEvents::getMetadata(); ?>
+<?php $meta = UmichEvents::getMetadata(); ?>
 <p>
     <label for="<?=$this->get_field_id('tags');?>">
         Tags:
         <select class="jqmslist widefat" id="<?=$this->get_field_id('tags');?>" name="<?=$this->get_field_name('tags');?>[]" multiple="multiple">
-            <? foreach( $meta->tags as $name => $id ): ?>
+            <?php foreach( $meta->tags as $name => $id ): ?>
             <option value="<?=$id;?>"<?=(in_array( $id, $instance['tags'] ) ? ' selected="selected"' : null);?>><?=$name;?></option>
-            <? endforeach; ?>
+            <?php endforeach; ?>
         </select>
     </label>
 </p>
@@ -49,9 +49,9 @@
     <label for="<?=$this->get_field_id('types');?>">
         Types:
         <select class="jqmslist widefat" id="<?=$this->get_field_id('types');?>" name="<?=$this->get_field_name('types');?>[]" multiple="multiple">
-            <? foreach( $meta->types as $name => $id ): ?>
+            <?php foreach( $meta->types as $name => $id ): ?>
             <option value="<?=$id;?>"<?=(in_array( $id, $instance['types'] ) ? ' selected="selected"' : null);?>><?=$name;?></option>
-            <? endforeach; ?>
+            <?php endforeach; ?>
         </select>
     </label>
 </p>
@@ -60,9 +60,9 @@
     <label for="<?=$this->get_field_id('groups');?>">
         Groups:
         <select class="jqmslist widefat" id="<?=$this->get_field_id('groups');?>" name="<?=$this->get_field_name('groups');?>[]" multiple="multiple">
-            <? foreach( $meta->sponsors as $name => $id ): ?>
+            <?php foreach( $meta->sponsors as $name => $id ): ?>
             <option value="<?=$id;?>"<?=(in_array( $id, $instance['groups'] ) ? ' selected="selected"' : null);?>><?=$name;?></option>
-            <? endforeach; ?>
+            <?php endforeach; ?>
         </select>
     </label>
 </p>
@@ -71,9 +71,9 @@
     <label for="<?=$this->get_field_id('locations');?>">
         Locations:
         <select class="jqmslist widefat" id="<?=$this->get_field_id('locations');?>" name="<?=$this->get_field_name('locations');?>[]" multiple="multiple">
-            <? foreach( $meta->locations as $name => $id ): ?>
+            <?php foreach( $meta->locations as $name => $id ): ?>
             <option value="<?=$id;?>"<?=(in_array( $id, $instance['locations'] ) ? ' selected="selected"' : null);?>><?=$name;?></option>
-            <? endforeach; ?>
+            <?php endforeach; ?>
         </select>
     </label>
 </p>

@@ -3,7 +3,7 @@
  * Plugin Name: U-M: Events
  * Plugin URI: https://github.com/umdigital/umich-events/
  * Description: Pull events from events.umich.edu
- * Version: 1.2.7
+ * Version: 1.2.8
  * Author: U-M: Digital
  * Author URI: http://vpcomm.umich.edu
  */
