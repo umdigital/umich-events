@@ -1,0 +1,49 @@
+.wp-block-umichevents-events.is-style-basic > ul.events {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.wp-block-umichevents-events.is-style-basic > ul.events li {
+    padding: .5rem 0;
+}
+.wp-block-umichevents-events.is-style-basic > ul.events li:before,
+.wp-block-umichevents-events.is-style-basic > ul.events li:after {
+    content: ' ';
+    display: table;
+}
+.wp-block-umichevents-events.is-style-basic > ul.events li:after {
+    clear: both;
+}
+
+.wp-block-umichevents-events.is-style-basic > p.more {
+    text-align: right;
+}
+
+.wp-block-umichevents-events.is-style-basic:not(.umichevents-events--show-image) > ul.events li {
+    padding-left: 135px;
+}
+.wp-block-umichevents-events.is-style-basic:not(.umichevents-events--show-image) > ul.events li .month-date {
+    float: left;
+    padding: 10px;
+    margin-left: -135px;
+    width: 125px;
+    text-align: center;
+    background: #efefef;
+}
+.wp-block-umichevents-events.is-style-basic:not(.umichevents-events--show-image) > ul.events li .month-date .month {
+    display: block;
+    text-transform: uppercase;
+}
+.wp-block-umichevents-events.is-style-basic:not(.umichevents-events--show-image) > ul.events li .month-date .day {
+    display: block;
+}
+
+
+.wp-block-umichevents-events.is-style-basic.umichevents-events--show-image > ul.events li {
+    padding-left: 160px;
+}
+.wp-block-umichevents-events.is-style-basic.umichevents-events--show-image > ul.events li img {
+    float: left;
+    max-width: 150px;
+    margin-left: -160px;
+}

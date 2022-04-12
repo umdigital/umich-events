@@ -1,0 +1,67 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 2,
+    "name": "umichevents/events",
+    "title": "U-M Events",
+    "category": "embed",
+    "icon": "tickets-alt",
+    "description": "Show U-M Events (events.umich.edu)",
+    "keywords": [],
+    "version": "1.0.0",
+    "textdomain": "umichevents",
+    "attributes": {
+        "showImage": {
+            "type"   : "boolean",
+            "default": false
+        },
+        "imageSize": {
+            "type"   : "string",
+            "default": "thumbnail"
+        },
+        "featured": {
+            "type"   : "boolean",
+            "default": false
+        },
+        "ongoing": {
+            "type"   : "boolean",
+            "default": false
+        },
+        "tags": {
+            "type"   : "array",
+            "default": []
+        },
+        "types": {
+            "type"   : "array",
+            "default": []
+        },
+        "groups": {
+            "type"   : "array",
+            "default": []
+        },
+        "locations": {
+            "type"   : "array",
+            "default": []
+        },
+        "moreLink": {
+            "type"   : "boolean",
+            "default": false
+        },
+        "moreLinkText": {
+            "type"   : "string",
+            "default": "See all events"
+        },
+        "limit": {
+            "type"   : "number",
+            "default": 25
+        }
+    },
+
+    "styles": [{
+        "name" : "basic",
+        "label": "Basic",
+        "isDefault": true
+    },{
+        "name" : "plain",
+        "label": "Plain"
+    }]
+}

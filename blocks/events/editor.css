@@ -1,0 +1,24 @@
+.wp-block-umichevents-events a {
+    pointer-events: none;
+}
+
+.umich-events--filter-list {
+    margin: 0;
+    padding: 0 0 1em 0;
+}
+.umich-events--filter-list li {
+    display: flex;
+    position: relative;
+}
+.umich-events--filter-list li span {
+    flex-shrink: 1;
+}
+.umich-events--filter-list li span.item-name {
+    flex-grow: 1;
+}
+
+
+.wp-block-umichevents-events > ul.events li > * {
+    margin: 0;
+    padding: 0;
+}

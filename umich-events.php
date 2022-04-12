@@ -3,21 +3,21 @@
  * Plugin Name: U-M: Events
  * Plugin URI: https://github.com/umdigital/umich-events/
  * Description: Pull events from events.umich.edu
- * Version: 1.2.8
+ * Version: 1.3
  * Author: U-M: Digital
- * Author URI: http://vpcomm.umich.edu
+ * Author URI: https://vpcomm.umich.edu
  */
-
-define( 'UMICHEVENTS_PATH', dirname( __FILE__ ) . DIRECTORY_SEPARATOR );
 
 /** PLUGIN & DATA MANAGEMENT CODE **/
 class UmichEvents
 {
-    static private $_baseRemoteUrl   = 'http://events.umich.edu/list/json?filter={FILTERS}&range={DATE}';
+    static public $pluginPath;
+
+    static private $_baseRemoteUrl   = 'https://events.umich.edu/list/json?filter={FILTERS}&range={DATE}';
     static private $_cacheTimeout    = 5; // in minutes (should be at least 1 minute)
     static private $_imgCacheTimeout = 7; // in days (should be at least 1 day)
 
-    static private $_baseMetaUrl = 'http://events.umich.edu/list/metadata/json';
+    static private $_baseMetaUrl = 'https://events.umich.edu/list/metadata/json';
     static private $_metaTimeout = 7; // in days (should be at least 1 day)
 
     static private $_eventsURL  = null;
@@ -28,12 +28,25 @@ class UmichEvents
 
     static public function init()
     {
+        self::$pluginPath = dirname( __FILE__ ) . DIRECTORY_SEPARATOR;
+
         // convert cache timeouts into seconds
         self::$_cacheTimeout    = 60 * (self::$_cacheTimeout >= 1 ? self::$_cacheTimeout : 1);
         self::$_imgCacheTimeout = 60 * 60 * 24 * (self::$_imgCacheTimeout >= 1 ? self::$_imgCacheTimeout : 1);
         self::$_metaTimeout     = 60 * 60 * 24 * (self::$_metaTimeout >= 1 ? self::$_metaTimeout : 1);
 
         add_action( 'init', array( __CLASS__, 'updater' ) );
+
+        // ADD EDITOR BLOCKS
+        add_action( 'init', function(){
+            if( function_exists( 'register_block_type' ) ) {
+                foreach( glob( __DIR__ .'/blocks/*',  GLOB_ONLYDIR ) as $block ) {
+                    if( is_file( "{$block}/block.php" ) ) {
+                        include_once "{$block}/block.php";
+                    }
+                }
+            }
+        });
 
         add_action( 'widgets_init', array( __CLASS__, 'initWidget' ) );
 
@@ -44,7 +57,7 @@ class UmichEvents
     {
         // UPDATER SETUP
         if( !class_exists( 'WP_GitHub_Updater' ) ) {
-            include_once UMICHEVENTS_PATH .'includes'. DIRECTORY_SEPARATOR .'updater.php';
+            include_once self::$pluginPath .'includes'. DIRECTORY_SEPARATOR .'updater.php';
         }
         if( isset( $_GET['force-check'] ) && $_GET['force-check'] && !defined( 'WP_GITHUB_FORCE_UPDATE' ) ) {
             define( 'WP_GITHUB_FORCE_UPDATE', true );
@@ -165,11 +178,13 @@ class UmichEvents
         }
 
         // display some debug html comments
+        /*
         if ( current_user_can( 'manage_options' ) ) {
             echo '<!-- Events Meta Source: '. self::$_metaURL ." -->\n";
             echo '<!-- Disk Cachefile: uploads'. str_replace( $wpUpload['basedir'], '', $cachePath ) ." -->\n";
             echo '<!-- Disk Cachfile Date: '. date( 'Y-m-d H:i:s', @filemtime( $cachePath ) ) ."UTC -->\n";
         }
+        */
 
         return self::$_metaData = @json_decode( file_get_contents( $cachePath ) );
     }
@@ -278,11 +293,13 @@ class UmichEvents
         }
 
         // display some debug html comments
+        /*
         if ( current_user_can( 'manage_options' ) ) {
             echo '<!-- Events Source: '. self::$_eventsURL ." -->\n";
             echo '<!-- Disk Cachefile: uploads'. str_replace( $wpUpload['basedir'], '', $cachePath ) ." -->\n";
             echo '<!-- Disk Cachfile Date: '. date( 'Y-m-d H:i:s', @filemtime( $cachePath ) ) ."UTC -->\n";
         }
+        */
 
         return self::$_eventsData[ $fileKey ] = @json_decode(file_get_contents( $cachePath ));
     }
