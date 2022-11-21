@@ -3,7 +3,7 @@
  * Plugin Name: University of Michigan: Events
  * Plugin URI: https://github.com/umdigital/umich-events/
  * Description: Pull events from events.umich.edu
- * Version: 1.3
+ * Version: 1.3.1
  * Author: U-M: Digital
  * Author URI: https://vpcomm.umich.edu
  */
@@ -474,6 +474,16 @@ class UmichEventsWidget extends WP_Widget
     function widget( $args, $instance )
     {
         UmichEvents::cleanup();
+
+        $instance = array_merge(array(
+            'featured'  => null,
+            'ongoing'   => null,
+            'tags'      => null,
+            'types'     => null,
+            'groups'    => null,
+            'locations' => null,
+            'limit'     => null
+        ), $instance );
 
         $events = UmichEvents::get(array(
             'featured'  => $instance['featured'],
