@@ -92,7 +92,7 @@ class UmichEvents_Block_Events
                     'ongoing'   => (bool) $instance['ongoing'],
                     'types'     => $instance['types'],
                     'tags'      => $instance['tags'],
-                    'groups'    => $instance['group'],
+                    'groups'    => $instance['groups'],
                     'locations' => $instance['locations'],
                     'limit'     => $instance['limit']
                 ));
