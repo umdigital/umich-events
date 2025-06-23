@@ -1,0 +1,5 @@
+{
+    "require": {
+        "umdigital/wordpress-github-updater": "^1.0"
+    }
+}

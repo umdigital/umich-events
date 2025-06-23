@@ -3,9 +3,10 @@
  * Plugin Name: University of Michigan: Events
  * Plugin URI: https://github.com/umdigital/umich-events/
  * Description: Pull events from events.umich.edu
- * Version: 1.3.2
+ * Version: 1.3.3
  * Author: U-M: Digital
  * Author URI: https://vpcomm.umich.edu
+ * Update URI: https://github.com/umdigital/umich-events/releases/latest
  */
 
 /** PLUGIN & DATA MANAGEMENT CODE **/
@@ -35,7 +36,27 @@ class UmichEvents
         self::$_imgCacheTimeout = 60 * 60 * 24 * (self::$_imgCacheTimeout >= 1 ? self::$_imgCacheTimeout : 1);
         self::$_metaTimeout     = 60 * 60 * 24 * (self::$_metaTimeout >= 1 ? self::$_metaTimeout : 1);
 
-        add_action( 'init', array( __CLASS__, 'updater' ) );
+        // load updater library
+        if( file_exists( UMCOOKIECONSENT_PATH . implode( DIRECTORY_SEPARATOR, [ 'vendor', 'umdigital', 'wordpress-github-updater', 'github-updater.php' ] ) ) ) {
+            include UMCOOKIECONSENT_PATH . implode( DIRECTORY_SEPARATOR, [ 'vendor', 'umdigital', 'wordpress-github-updater', 'github-updater.php' ] );
+        }
+        else if( file_exists( UMCOOKIECONSENT_PATH .'includes'. DIRECTORY_SEPARATOR .'github-updater.php' ) ) {
+            include UMCOOKIECONSENT_PATH .'includes'. DIRECTORY_SEPARATOR .'github-updater.php';
+        }
+
+        // Initialize Github Updater
+        if( class_exists( '\Umich\GithubUpdater\Init' ) ) {
+            new \Umich\GithubUpdater\Init([
+                'repo' => 'umdigital/umich-events',
+                'slug' => plugin_basename( __FILE__ ),
+            ]);
+        }
+        // Show error upon failure
+        else {
+            add_action( 'admin_notices', function(){
+                echo '<div class="error notice"><h3>WARNING</h3><p>U-M: Events plugin is currently unable to check for updates due to a missing dependency.  Please <a href="https://github.com/umdigital/umich-events">reinstall the plugin</a>.</p></div>';
+            });
+        }
 
         // ADD EDITOR BLOCKS
         add_action( 'init', function(){
@@ -51,43 +72,6 @@ class UmichEvents
         add_action( 'widgets_init', array( __CLASS__, 'initWidget' ) );
 
         add_shortcode( 'umichevents', array( __CLASS__, 'displayEvents' ) );
-    }
-
-    static public function updater()
-    {
-        // UPDATER SETUP
-        if( !class_exists( 'WP_GitHub_Updater' ) ) {
-            include_once self::$pluginPath .'includes'. DIRECTORY_SEPARATOR .'updater.php';
-        }
-        if( isset( $_GET['force-check'] ) && $_GET['force-check'] && !defined( 'WP_GITHUB_FORCE_UPDATE' ) ) {
-            define( 'WP_GITHUB_FORCE_UPDATE', true );
-        }
-        if( is_admin() ) {
-            new WP_GitHub_Updater(array(
-                // this is the slug of your plugin
-                'slug' => plugin_basename(__FILE__),
-                // this is the name of the folder your plugin lives in
-                'proper_folder_name' => dirname( plugin_basename( __FILE__ ) ),
-                // the github API url of your github repo
-                'api_url' => 'https://api.github.com/repos/umdigital/umich-events',
-                // the github raw url of your github repo
-                'raw_url' => 'https://raw.githubusercontent.com/umdigital/umich-events/master',
-                // the github url of your github repo
-                'github_url' => 'https://github.com/umdigital/umich-events',
-                 // the zip url of the github repo
-                'zip_url' => 'https://github.com/umdigital/umich-events/zipball/master',
-                // wether WP should check the validity of the SSL cert when getting an update, see https://github.com/jkudish/WordPress-GitHub-Plugin-Updater/issues/2 and https://github.com/jkudish/WordPress-GitHub-Plugin-Updater/issues/4 for details
-                'sslverify' => true,
-                // which version of WordPress does your plugin require?
-                'requires' => '3.0',
-                // which version of WordPress is your plugin tested up to?
-                'tested' => '3.9.1',
-                // which file to use as the readme for the version number
-                'readme' => 'README.md',
-                // Access private repositories by authorizing under Appearance > Github Updates when this example plugin is installed
-                'access_token' => '',
-            ));
-        }
     }
 
     /* CLEANUP CACHE DIRECTORIES */

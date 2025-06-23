@@ -127,6 +127,9 @@ class UmichEvents_Block_Events
                         $response->set_status( 200 );
 
                         return $response;
+                    },
+                    'permission_callback' => function(){
+                        return is_user_logged_in();
                     }
                 )
             );

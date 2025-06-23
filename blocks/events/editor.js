@@ -3,14 +3,6 @@
     const { useBlockProps, InnerBlocks } = wp.blockEditor;
     const { createElement } = wp.element;
 
-    // add custom api endpoint
-    wp.data.dispatch('core').addEntities([{
-        baseURL: '/umich-events/v1/metadata',
-        kind   : 'umich-events/v1',
-        name   : 'metadata',
-        label  : 'Get Event Metadata'
-    }]);
-
     wp.blocks.registerBlockType( 'umichevents/events', {
         edit: ( props ) => {
             // get available image sizes to choose from
@@ -24,45 +16,73 @@
                 });
             }, [] );
 
+            const [ eventMetadata, setEventMetadata ] = React.useState({
+                'types'    : [{
+                    value: '',
+                    label: 'Loading Types...'
+                }],
+                'tags'     : [{
+                    value: '',
+                    label: 'Loading Tags...'
+                }],
+                'sponsors' : [{
+                    value: '',
+                    label: 'Loading Groups...'
+                }],
+                'locations': [{
+                    value: '',
+                    label: 'Loading Locations...'
+                }]
+            });
 
-            const eventMetadata = wp.data.useSelect( (select) => {
-                const res = select('core').getEntityRecords( 'umich-events/v1', 'metadata' );
-
-                let metadata = {
-                    'types'    : [{
-                        value: '',
-                        label: 'Loading Types...'
-                    }],
-                    'tags'     : [{
-                        value: '',
-                        label: 'Loading Tags...'
-                    }],
-                    'sponsors' : [{
-                        value: '',
-                        label: 'Loading Groups...'
-                    }],
-                    'locations': [{
-                        value: '',
-                        label: 'Loading Locations...'
-                    }]
-                };
-
-                if( res !== null ) {
-                    for( let mKey in metadata ) {
-                        if( metadata.hasOwnProperty( mKey ) ) {
-                            metadata[ mKey ] = [];
-                            Object.entries( res[0][ mKey ] ).forEach( ([ key, val ]) => {
-                                metadata[ mKey ].push({
-                                    value: val,
-                                    label: key
-                                });
-                            });
-                        }
+            React.useEffect(() => {
+                wp.apiFetch({ path: '/umich-events/v1/metadata' }).then( (res) => {
+                    let metadata = {
+                        'types'    : [{
+                            value: '',
+                            label: 'Loading Types...'
+                        }],
+                        'tags'     : [{
+                            value: '',
+                            label: 'Loading Tags...'
+                        }],
+                        'sponsors' : [{
+                            value: '',
+                            label: 'Loading Groups...'
+                        }],
+                        'locations': [{
+                            value: '',
+                            label: 'Loading Locations...'
+                        }]
                     };
-                }
 
-                return metadata;
-            }, [] );
+                    if( res.hasOwnProperty('metadata') ) {
+                        for( let mKey in metadata ) {
+                            if( res.metadata.hasOwnProperty( mKey ) ) {
+                                metadata[ mKey ] = [];
+                                Object.entries( res.metadata[ mKey ] ).forEach( ([ key, val ]) => {
+                                    metadata[ mKey ].push({
+                                        value: val,
+                                        label: key
+                                    });
+                                });
+                            }
+                        };
+                    }
+                    else {
+                        Object.entries( metadata ).forEach(([key, value]) => {
+                            if( value.length == 1 && value[0].label.startsWith('Loading ') ) {
+                                metadata[ key ] = [{
+                                    value: '-1',
+                                    label: 'Error getting options.'
+                                }];
+                            }
+                        });
+                    }
+
+                    setEventMetadata( metadata );
+                });
+            }, []);
 
             return createElement(
                 'div',

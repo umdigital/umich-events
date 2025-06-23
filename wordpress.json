@@ -1,0 +1,5 @@
+{
+    "requires"    : "5.8.0",
+    "tested"      : "6.8.1",
+    "requires_php": "7.4.0"
+}
