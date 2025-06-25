@@ -3,7 +3,7 @@
  * Plugin Name: University of Michigan: Events
  * Plugin URI: https://github.com/umdigital/umich-events/
  * Description: Pull events from events.umich.edu
- * Version: 1.3.3
+ * Version: 1.3.4
  * Author: U-M: Digital
  * Author URI: https://vpcomm.umich.edu
  * Update URI: https://github.com/umdigital/umich-events/releases/latest
@@ -37,11 +37,11 @@ class UmichEvents
         self::$_metaTimeout     = 60 * 60 * 24 * (self::$_metaTimeout >= 1 ? self::$_metaTimeout : 1);
 
         // load updater library
-        if( file_exists( UMCOOKIECONSENT_PATH . implode( DIRECTORY_SEPARATOR, [ 'vendor', 'umdigital', 'wordpress-github-updater', 'github-updater.php' ] ) ) ) {
-            include UMCOOKIECONSENT_PATH . implode( DIRECTORY_SEPARATOR, [ 'vendor', 'umdigital', 'wordpress-github-updater', 'github-updater.php' ] );
+        if( file_exists( self::$pluginPath . implode( DIRECTORY_SEPARATOR, [ 'vendor', 'autoload.php' ] ) ) ) {
+            include self::$pluginPath . implode( DIRECTORY_SEPARATOR, [ 'vendor', 'autoload.php' ] );
         }
-        else if( file_exists( UMCOOKIECONSENT_PATH .'includes'. DIRECTORY_SEPARATOR .'github-updater.php' ) ) {
-            include UMCOOKIECONSENT_PATH .'includes'. DIRECTORY_SEPARATOR .'github-updater.php';
+        else if( file_exists( self::$pluginPath .'includes'. DIRECTORY_SEPARATOR .'github-updater.php' ) ) {
+            include self::$pluginPath .'includes'. DIRECTORY_SEPARATOR .'github-updater.php';
         }
 
         // Initialize Github Updater
