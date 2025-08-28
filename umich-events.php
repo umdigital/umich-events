@@ -3,7 +3,7 @@
  * Plugin Name: University of Michigan: Events
  * Plugin URI: https://github.com/umdigital/umich-events/
  * Description: Pull events from events.umich.edu
- * Version: 1.3.4
+ * Version: 1.4.0
  * Author: U-M: Digital
  * Author URI: https://vpcomm.umich.edu
  * Update URI: https://github.com/umdigital/umich-events/releases/latest
@@ -14,11 +14,11 @@ class UmichEvents
 {
     static public $pluginPath;
 
-    static private $_baseRemoteUrl   = 'https://events.umich.edu/list/json?filter={FILTERS}&range={DATE}';
+    static private $_baseRemoteUrl   = 'https://events.umich.edu/list/json?v=2&filter={FILTERS}&range={DATE}';
     static private $_cacheTimeout    = 5; // in minutes (should be at least 1 minute)
     static private $_imgCacheTimeout = 7; // in days (should be at least 1 day)
 
-    static private $_baseMetaUrl = 'https://events.umich.edu/list/metadata/json';
+    static private $_baseMetaUrl = 'https://events.umich.edu/list/metadata/json?v=2';
     static private $_metaTimeout = 7; // in days (should be at least 1 day)
 
     static private $_eventsURL  = null;

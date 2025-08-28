@@ -13,7 +13,7 @@
             <?php if( $event->event_subtitle ): ?>
             <h6><?=$event->event_subtitle;?></h6>
             <?php endif; ?>
-            <span class="location"><?=$event->building_name;?></span>
+            <span class="location"><?=$event->location_name;?></span>
             <span class="time">@ <?=date( 'g:ia', strtotime( date( 'Y-m-d '. $event->time_start ) ) );?></span>
         </li>
         <?php endforeach; ?>
