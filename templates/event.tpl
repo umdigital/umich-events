@@ -1,5 +1,5 @@
 <?php if( $instance['showimage'] && $event->image_url ): ?>
-<img src="<?=UmichEvents::getResizedEventImage( $event->image_url, $instance['image-size'] );?>" />
+<img src="<?=UmichEvents::getResizedEventImage( $event->image_url, $instance['image-size'] );?>" alt="<?=@$event->image_description;?>" />
 <?php endif; ?>
 <span class="month-date">
     <span class="month"><?=date( 'M', strtotime( $event->datetime_start ) );?></span>

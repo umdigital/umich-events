@@ -3,7 +3,7 @@
         <?php foreach( $events as $event ): ?>
         <li>
             <?php if( $instance['showImage'] && $event->image_url ): ?>
-            <img src="<?=UmichEvents::getResizedEventImage( $event->image_url, $instance['imageSize'] );?>" />
+            <img src="<?=UmichEvents::getResizedEventImage( $event->image_url, $instance['imageSize'] );?>" alt="<?=@$event->image_description;?>" />
             <?php endif; ?>
             <span class="month-date">
                 <span class="month"><?=date( 'M', strtotime( $event->datetime_start ) );?></span>

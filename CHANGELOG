@@ -1,3 +1,8 @@
+1.4.1 (2025-09-19)
+==================
+resolves issue #5
+- use image_description as alt text for image
+
 1.4.0 (2025-08-28)
 ==================
 resolves issue #4
