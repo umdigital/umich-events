@@ -3,7 +3,7 @@
  * Plugin Name: University of Michigan: Events
  * Plugin URI: https://github.com/umdigital/umich-events/
  * Description: Pull events from events.umich.edu
- * Version: 1.4.1
+ * Version: 1.4.2
  * Author: U-M: Digital
  * Author URI: https://vpcomm.umich.edu
  * Update URI: https://github.com/umdigital/umich-events/releases/latest
@@ -135,29 +135,34 @@ class UmichEvents
             @touch( $cachePath );
 
             // get live results
-            $feed = file_get_contents( self::$_metaURL );
+            $res = wp_remote_get( self::$_metaURL, [
+                'user-agent' => 'WordPress/' . get_bloginfo( 'version' ) . '; https://events.umich.edu; (' . get_bloginfo( 'url' ) .')'
+            ]);
+            if( !is_wp_error( $res ) ) {
+                $feed = @$res['body'];
 
-            if( $feed && (json_last_error() === JSON_ERROR_NONE) ) {
-                $feed = json_decode( $feed );
+                if( $feed && (json_last_error() === JSON_ERROR_NONE) ) {
+                    $feed = json_decode( $feed );
 
-                // cleanup and organize data
-                $meta = array( 'raw' => $feed );
-                foreach( $feed as $type => $data ) {
-                    $meta[ $type ] = array();
+                    // cleanup and organize data
+                    $meta = array( 'raw' => $feed );
+                    foreach( $feed as $type => $data ) {
+                        $meta[ $type ] = array();
 
-                    foreach( $data as $record ) {
-                        $meta[ $type ][ $record->name ] = $record->id;
+                        foreach( $data as $record ) {
+                            $meta[ $type ][ $record->name ] = $record->id;
+                        }
+
+                        ksort( $meta[ $type ] );
                     }
 
-                    ksort( $meta[ $type ] );
+
+                    // CACHE RESULTS
+                    // make sure store dir is there
+                    wp_mkdir_p( dirname( $cachePath ) );
+
+                    @file_put_contents( $cachePath, json_encode( $meta ) );
                 }
-
-
-                // CACHE RESULTS
-                // make sure store dir is there
-                wp_mkdir_p( dirname( $cachePath ) );
-
-                @file_put_contents( $cachePath, json_encode( $meta ) );
             }
         }
 
@@ -264,15 +269,20 @@ class UmichEvents
             @touch( $cachePath );
 
             // get live results
-            $feed = file_get_contents( self::$_eventsURL );
-            json_decode( $feed );
+            $res = wp_remote_get( self::$_eventsURL, [
+                'user-agent' => 'WordPress/' . get_bloginfo( 'version' ) . '; https://events.umich.edu; (' . get_bloginfo( 'url' ) .')'
+            ]);
+            if( !is_wp_error( $res ) ) {
+                $feed = @$res['body'];
+                json_decode( $feed );
 
-            if( $feed && (json_last_error() === JSON_ERROR_NONE) ) {
-                // CACHE RESULTS
-                // make sure store dir is there
-                wp_mkdir_p( dirname( $cachePath ) );
+                if( $feed && (json_last_error() === JSON_ERROR_NONE) ) {
+                    // CACHE RESULTS
+                    // make sure store dir is there
+                    wp_mkdir_p( dirname( $cachePath ) );
 
-                @file_put_contents( $cachePath, $feed );
+                    @file_put_contents( $cachePath, $feed );
+                }
             }
         }
 

@@ -1,3 +1,8 @@
+1.4.2 (2026-06-17)
+==================
+resolves TDX #10728425
+- U-M Cloudflare api requests failing
+
 1.4.1 (2025-09-19)
 ==================
 resolves issue #5
