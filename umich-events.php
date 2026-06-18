@@ -237,7 +237,7 @@ class UmichEvents
         $fileKey = md5( $filtersString . date( 'Y-m-d' ) . $options['limit'] );
 
         // already in memory return it
-        if( @self::$_eventsData[ $fileKey ] ) {
+        if( isset( self::$_eventsData[ $fileKey ] ) && @self::$_eventsData[ $fileKey ] ) {
             return self::$_eventsData[ $fileKey ];
         }
 
